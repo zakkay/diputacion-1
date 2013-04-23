@@ -181,10 +181,9 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`LLAMADA` (
 -- Table `mydb`.`MUNICIPIO`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `mydb`.`MUNICIPIO` (
-  `provincia` VARCHAR(60) NOT NULL ,
-  `nombre` VARCHAR(60) NOT NULL ,
-  PRIMARY KEY (`provincia`) );
-
+  `provincia` VARCHAR(40) NOT NULL ,
+  `nombre` VARCHAR(200) NOT NULL ,
+  PRIMARY KEY (`provincia`,`nombre`) );
 
 -- -----------------------------------------------------
 -- Table `mydb`.`PLAN_CONCERTACION`
@@ -203,13 +202,9 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`PLAN_CONCERTACION` (
   CONSTRAINT `fk_1DE59C0E-CB27-4262-9E33-0049DB9827CC`
     FOREIGN KEY (`codigo1` )
     REFERENCES `mydb`.`DIPUTACION` (`codigo` ),
-  CONSTRAINT `fk_81659B88-B47D-4D43-8ADD-B065029F2221`
-    FOREIGN KEY (`nombre1` )
-    REFERENCES `mydb`.`MUNICIPIO` (`nombre` ),
-  CONSTRAINT `fk_6746455C-5879-4FDE-8885-740D68B1BCFF`
-    FOREIGN KEY (`provincia` )
-    REFERENCES `mydb`.`MUNICIPIO` (`provincia` ));
-
+  CONSTRAINT `fk_nombre_provincia_municipio`
+    FOREIGN KEY (`provincia`,`nombre1` )
+    REFERENCES `mydb`.`MUNICIPIO` (`provincia`,`nombre` ));
 
 -- -----------------------------------------------------
 -- Table `mydb`.`RMA`
