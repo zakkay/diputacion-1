@@ -1,253 +1,231 @@
--- Generado por Oracle SQL Developer Data Modeler 3.1.4.710
---   en:        2013-04-22 09:41:49 CEST
---   sitio:      Oracle Database 10g
---   tipo:      Oracle Database 10g
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`LINEA`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`LINEA` (
+  `numero` DECIMAL NOT NULL ,
+  `periodo_facturacion` DATE NULL DEFAULT NULL ,
+  `publico` CHAR(1) NULL DEFAULT NULL ,
+  PRIMARY KEY (`numero`) );
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`CATEGORIA`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`CATEGORIA` (
+  `codigo` DECIMAL NOT NULL ,
+  `descripcion` VARCHAR(300) NULL DEFAULT NULL ,
+  PRIMARY KEY (`codigo`) );
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`TERMINAL`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`TERMINAL` (
+  `codigo` DECIMAL NOT NULL ,
+  `fecha_alta` DATE NULL DEFAULT NULL ,
+  `fecha_baja` DATE NULL DEFAULT NULL ,
+  `marca` VARCHAR(40) NULL DEFAULT NULL ,
+  `modelo` VARCHAR(40) NULL DEFAULT NULL ,
+  `configuracion` VARCHAR(200) NULL DEFAULT NULL ,
+  `sn` DECIMAL NOT NULL ,
+  `numero_interno` DECIMAL NULL DEFAULT NULL ,
+  `pedido` VARCHAR(400) NULL DEFAULT NULL ,
+  `product` VARCHAR(200) NULL DEFAULT NULL ,
+  PRIMARY KEY (`codigo`) ,
+  UNIQUE INDEX (`sn` ASC) ,
+  UNIQUE INDEX (`sn` ASC) );
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`GRUPO_RESCATE`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`GRUPO_RESCATE` (
+  `codigo` DECIMAL NOT NULL ,
+  `nombre` VARCHAR(100) NOT NULL ,
+  PRIMARY KEY (`codigo`) );
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`DIPUTACION`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`DIPUTACION` (
+  `codigo` DECIMAL NOT NULL ,
+  `direccion` VARCHAR(300) NOT NULL ,
+  `telefono` VARCHAR(20) NULL DEFAULT NULL ,
+  `cod_postal` DECIMAL NULL DEFAULT NULL ,
+  `ciudad` VARCHAR(40) NOT NULL ,
+  PRIMARY KEY (`codigo`) );
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`ROLES`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`ROLES` (
+  `codigo` INT NOT NULL ,
+  `tipo` VARCHAR(45) NULL ,
+  PRIMARY KEY (`codigo`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`USUARIO`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`USUARIO` (
+  `dni` VARCHAR(9) NOT NULL ,
+  `nombre` VARCHAR(200) NOT NULL ,
+  `apellidos` VARCHAR(200) NOT NULL ,
+  `email` VARCHAR(50) NOT NULL ,
+  `codigo` DECIMAL NOT NULL ,
+  `rol` INT NOT NULL ,
+  `codigo1` DECIMAL NULL DEFAULT NULL ,
+  PRIMARY KEY (`dni`) ,
+  INDEX `fk_9CFA7928-7362-48F4-8DCA-109E06768401` (`codigo` ASC) ,
+  INDEX `fk_E4F5117A-7DF2-47F6-83F0-36378FDD65C1` (`codigo1` ASC) ,
+  INDEX `fk_USUARIO_ROLES1` (`rol` ASC) ,
+  CONSTRAINT `fk_9CFA7928-7362-48F4-8DCA-109E06768401`
+    FOREIGN KEY (`codigo` )
+    REFERENCES `mydb`.`GRUPO_RESCATE` (`codigo` ),
+  CONSTRAINT `fk_E4F5117A-7DF2-47F6-83F0-36378FDD65C1`
+    FOREIGN KEY (`codigo1` )
+    REFERENCES `mydb`.`DIPUTACION` (`codigo` ),
+  CONSTRAINT `fk_USUARIO_ROLES1`
+    FOREIGN KEY (`rol` )
+    REFERENCES `mydb`.`ROLES` (`codigo` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`ASIGNACION_FIJO`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`ASIGNACION_FIJO` (
+  `fecha_asignacion` DATE NOT NULL ,
+  `fecha_fin` DATE NOT NULL ,
+  `dni` VARCHAR(9) NOT NULL ,
+  `codigo` DECIMAL NULL DEFAULT NULL ,
+  `numero` DECIMAL NOT NULL ,
+  `codigo1` DECIMAL NOT NULL ,
+  PRIMARY KEY (`dni`, `numero`, `codigo1`) ,
+  CONSTRAINT `fk_06E77907-E6D8-4570-8F31-0A4910C9AF01`
+    FOREIGN KEY (`numero` )
+    REFERENCES `mydb`.`LINEA` (`numero` ),
+  CONSTRAINT `fk_70807A7D-9571-4E2B-94B8-1A33EF4E5464`
+    FOREIGN KEY (`codigo` )
+    REFERENCES `mydb`.`CATEGORIA` (`codigo` ),
+  CONSTRAINT `fk_F8AE2F64-6F8A-4A5A-97F2-48A4DE1423AA`
+    FOREIGN KEY (`codigo1` )
+    REFERENCES `mydb`.`TERMINAL` (`codigo` ),
+  CONSTRAINT `fk_284804E8-3D3C-4AC1-B5EC-98B567F7ED9B`
+    FOREIGN KEY (`dni` )
+    REFERENCES `mydb`.`USUARIO` (`dni` ));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`PERFIL`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`PERFIL` (
+  `codigo` DECIMAL NOT NULL ,
+  `descripcion` VARCHAR(300) NULL DEFAULT NULL ,
+  `saldo_limite` DECIMAL NULL DEFAULT NULL ,
+  PRIMARY KEY (`codigo`) );
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`ASIGNACION_MOVIL`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`ASIGNACION_MOVIL` (
+  `fecha_asignacion` DATE NOT NULL ,
+  `fecha_fin` DATE NOT NULL ,
+  `dni` VARCHAR(9) NOT NULL ,
+  `codigo` DECIMAL NULL DEFAULT NULL ,
+  `numero` DECIMAL NOT NULL ,
+  `codigo1` DECIMAL NOT NULL ,
+  PRIMARY KEY (`dni`, `numero`, `codigo1`) ,
+  CONSTRAINT `fk_A7DD52BF-5999-432F-8C6D-3FAF36AEF601`
+    FOREIGN KEY (`codigo` )
+    REFERENCES `mydb`.`PERFIL` (`codigo` ),
+  CONSTRAINT `fk_ABFE6D03-941A-464D-8C06-476D4AED081D`
+    FOREIGN KEY (`dni` )
+    REFERENCES `mydb`.`USUARIO` (`dni` ),
+  CONSTRAINT `fk_FAF55427-DE51-4BC3-978A-DAC15B73893F`
+    FOREIGN KEY (`codigo1` )
+    REFERENCES `mydb`.`TERMINAL` (`codigo` ),
+  CONSTRAINT `fk_37EFF3E8-EB5A-482B-880E-0A12D8214335`
+    FOREIGN KEY (`numero` )
+    REFERENCES `mydb`.`LINEA` (`numero` ));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`LLAMADA`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`LLAMADA` (
+  `numero_destino` DECIMAL NOT NULL ,
+  `tipo` VARCHAR(40) NULL DEFAULT NULL ,
+  `duracion` DECIMAL NOT NULL ,
+  `coste` DECIMAL NOT NULL ,
+  `numero` DECIMAL NOT NULL ,
+  PRIMARY KEY (`numero`) ,
+  CONSTRAINT `fk_9228D15F-0E19-43D3-99FC-EDCF2EBC67C3`
+    FOREIGN KEY (`numero` )
+    REFERENCES `mydb`.`LINEA` (`numero` ));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`MUNICIPIO`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`MUNICIPIO` (
+  `provincia` VARCHAR(60) NOT NULL ,
+  `nombre` VARCHAR(60) NOT NULL ,
+  PRIMARY KEY (`provincia`) );
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`PLAN_CONCERTACION`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`PLAN_CONCERTACION` (
+  `codigo` DECIMAL NOT NULL ,
+  `fecha` DATE NOT NULL ,
+  `nombre` VARCHAR(200) NOT NULL ,
+  `descripcion` VARCHAR(300) NOT NULL ,
+  `precio` DECIMAL NULL DEFAULT NULL ,
+  `codigo1` DECIMAL NOT NULL ,
+  `nombre1` VARCHAR(200) NOT NULL ,
+  `provincia` VARCHAR(40) NOT NULL ,
+  PRIMARY KEY (`codigo1`, `codigo`, `nombre1`, `provincia`) ,
+  INDEX `fk_6746455C-5879-4FDE-8885-740D68B1BCFF` (`provincia` ASC) ,
+  CONSTRAINT `fk_1DE59C0E-CB27-4262-9E33-0049DB9827CC`
+    FOREIGN KEY (`codigo1` )
+    REFERENCES `mydb`.`DIPUTACION` (`codigo` ),
+  CONSTRAINT `fk_81659B88-B47D-4D43-8ADD-B065029F2221`
+    FOREIGN KEY (`nombre1` )
+    REFERENCES `mydb`.`MUNICIPIO` (`nombre` ),
+  CONSTRAINT `fk_6746455C-5879-4FDE-8885-740D68B1BCFF`
+    FOREIGN KEY (`provincia` )
+    REFERENCES `mydb`.`MUNICIPIO` (`provincia` ));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`RMA`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`RMA` (
+  `fecha_emision` DATE NOT NULL ,
+  `fecha_recepcion` DATE NULL DEFAULT NULL ,
+  `detalle` VARCHAR(200) NULL DEFAULT NULL ,
+  `codigo` DECIMAL NOT NULL ,
+  PRIMARY KEY (`codigo`) ,
+  CONSTRAINT `fk_D666DF7E-0898-441C-A18B-7ADA93B4080D`
+    FOREIGN KEY (`codigo` )
+    REFERENCES `mydb`.`TERMINAL` (`codigo` ));
 
 
 
-CREATE TABLE ASIGNACION_FIJO 
-    ( 
-     fecha_asignacion DATE  NOT NULL , 
-     fecha_fin DATE  NOT NULL , 
-     dni VARCHAR(9)  NOT NULL , 
-     codigo DECIMAL , 
-     numero DECIMAL  NOT NULL , 
-     codigo1 DECIMAL  NOT NULL ,
-     PRIMARY KEY(dni,numero,codigo1)
-    ) 
-;
-
-
-
-CREATE TABLE ASIGNACION_MOVIL 
-    ( 
-     fecha_asignacion DATE  NOT NULL , 
-     fecha_fin DATE  NOT NULL , 
-     dni VARCHAR(9)  NOT NULL , 
-     codigo DECIMAL , 
-     numero DECIMAL  NOT NULL , 
-     codigo1 DECIMAL  NOT NULL ,
-     PRIMARY KEY (dni,numero,codigo1)
-    ) 
-;
-
-
-CREATE TABLE CATEGORIA 
-    ( 
-     codigo DECIMAL  NOT NULL , 
-     descripcion VARCHAR(300) ,
-     PRIMARY KEY(codigo)
-    ) 
-;
-
-
-CREATE TABLE DIPUTACION 
-    ( 
-     codigo DECIMAL  NOT NULL , 
-     direccion VARCHAR(300)  NOT NULL , 
-     telefono VARCHAR(20) , 
-     cod_postal DECIMAL , 
-     ciudad VARCHAR(40)  NOT NULL ,
-     PRIMARY KEY(codigo)
-    ) 
-;
-
-CREATE TABLE GRUPO_RESCATE 
-    ( 
-     codigo DECIMAL  NOT NULL , 
-     nombre VARCHAR(100)  NOT NULL ,
-     PRIMARY KEY(codigo)
-    ) 
-;
-
-CREATE TABLE LINEA 
-    ( 
-     numero DECIMAL  NOT NULL , 
-     periodo_facturacion DATE , 
-     publico CHAR (1) ,
-     PRIMARY KEY(numero)
-    ) 
-;
-
-CREATE TABLE LLAMADA 
-    ( 
-     numero_destino DECIMAL  NOT NULL , 
-     tipo VARCHAR(40) , 
-     duracion DECIMAL  NOT NULL , 
-     coste DECIMAL  NOT NULL , 
-     numero DECIMAL  NOT NULL ,
-     PRIMARY KEY(numero)
-    ) 
-;
-
-CREATE TABLE MUNICIPIO 
-    (     
-     provincia VARCHAR(60)  NOT NULL ,
-     nombre VARCHAR(60)  NOT NULL , 
-     PRIMARY KEY(provincia)
-    ) 
-;
-
-
-
-CREATE TABLE PERFIL 
-    ( 
-     codigo DECIMAL  NOT NULL , 
-     descripcion VARCHAR(300) , 
-     saldo_limite DECIMAL ,
-     PRIMARY KEY(codigo)
-    ) 
-;
-
-CREATE TABLE PLAN_CONCERTACION 
-    ( 
-     codigo DECIMAL  NOT NULL , 
-     fecha DATE  NOT NULL , 
-     nombre VARCHAR(200)  NOT NULL , 
-     descripcion VARCHAR(300)  NOT NULL , 
-     precio DECIMAL , 
-     codigo1 DECIMAL  NOT NULL , 
-     nombre1 VARCHAR(200)  NOT NULL , 
-     provincia VARCHAR(40)  NOT NULL ,
-     PRIMARY KEY(codigo1,codigo,nombre1,provincia)
-    ) 
-;
-
-CREATE TABLE RMA 
-    ( 
-     fecha_emision DATE  NOT NULL , 
-     fecha_recepcion DATE , 
-     detalle VARCHAR(200) , 
-     codigo DECIMAL  NOT NULL ,
-     PRIMARY KEY(codigo)
-    ) 
-;
-
-
-CREATE TABLE TERMINAL 
-    ( 
-     codigo DECIMAL  NOT NULL , 
-     fecha_alta DATE , 
-     fecha_baja DATE , 
-     marca VARCHAR(40) , 
-     modelo VARCHAR(40) , 
-     configuracion VARCHAR(200) , 
-     sn DECIMAL  NOT NULL , 
-     numero_interno DECIMAL , 
-     pedido VARCHAR(400) , 
-     product VARCHAR(200) ,
-     PRIMARY KEY(codigo) 
-    ) 
-;
-
-
-
-ALTER TABLE TERMINAL 
-    ADD UNIQUE ( sn ) ;
-
-
-
-CREATE TABLE USUARIO 
-    ( 
-     dni VARCHAR(9)  NOT NULL , 
-     nombre VARCHAR(200)  NOT NULL , 
-     apellidos VARCHAR(200)  NOT NULL , 
-     email VARCHAR(50)  NOT NULL , 
-     codigo DECIMAL  NOT NULL , 
-     rol INT  NOT NULL , 
-     codigo1 DECIMAL ,
-     PRIMARY KEY(dni)
-    ) 
-;
-
-
-
-
-ALTER TABLE USUARIO 
-ADD FOREIGN KEY (codigo) REFERENCES GRUPO_RESCATE (codigo);
-
-
-ALTER TABLE ASIGNACION_MOVIL 
-ADD FOREIGN KEY (dni) REFERENCES USUARIO (dni);
-    
-
-ALTER TABLE ASIGNACION_MOVIL 
-ADD FOREIGN KEY (codigo1) REFERENCES TERMINAL (codigo);
-
-
-ALTER TABLE ASIGNACION_FIJO 
-ADD FOREIGN KEY (numero) REFERENCES LINEA (numero);
-
-
-ALTER TABLE ASIGNACION_MOVIL 
-ADD FOREIGN KEY (numero) REFERENCES LINEA (numero);
-
-ALTER TABLE ASIGNACION_MOVIL 
-ADD FOREIGN KEY (codigo) REFERENCES PERFIL (codigo);
-
-ALTER TABLE ASIGNACION_FIJO 
-ADD FOREIGN KEY (codigo) REFERENCES CATEGORIA (codigo);
-
-
-ALTER TABLE USUARIO 
-ADD FOREIGN KEY (codigo1) REFERENCES DIPUTACION (codigo);
-
-
-ALTER TABLE PLAN_CONCERTACION 
-ADD FOREIGN KEY (codigo1) REFERENCES DIPUTACION (codigo);
-
-
-ALTER TABLE PLAN_CONCERTACION 
-ADD FOREIGN KEY (nombre1) REFERENCES MUNICIPIO (nombre),
-ADD FOREIGN KEY (provincia) REFERENCES MUNICIPIO (provincia);
-
-ALTER TABLE LLAMADA 
-ADD FOREIGN KEY (numero) REFERENCES LINEA (numero);
-
-
-ALTER TABLE RMA 
-ADD FOREIGN KEY (codigo) REFERENCES TERMINAL (codigo);
-
-
-ALTER TABLE ASIGNACION_FIJO 
-ADD FOREIGN KEY (codigo1) REFERENCES TERMINAL (codigo);
-
-
-ALTER TABLE ASIGNACION_FIJO 
-ADD FOREIGN KEY (dni) REFERENCES USUARIO (dni); 
-
-
-
--- Informe de Resumen de Oracle SQL Developer Data Modeler: 
--- 
--- CREATE TABLE                            13
--- CREATE INDEX                             0
--- ALTER TABLE                             28
--- CREATE VIEW                              0
--- CREATE PACKAGE                           0
--- CREATE PACKAGE BODY                      0
--- CREATE PROCEDURE                         0
--- CREATE FUNCTION                          0
--- CREATE TRIGGER                           0
--- ALTER TRIGGER                            0
--- CREATE STRUCTURED TYPE                   0
--- CREATE COLLECTION TYPE                   0
--- CREATE CLUSTER                           0
--- CREATE CONTEXT                           0
--- CREATE DATABASE                          0
--- CREATE DIMENSION                         0
--- CREATE DIRECTORY                         0
--- CREATE DISK GROUP                        0
--- CREATE ROLE                              0
--- CREATE ROLLBACK SEGMENT                  0
--- CREATE SEQUENCE                          0
--- CREATE MATERIALIZED VIEW                 0
--- CREATE SYNONYM                           0
--- CREATE TABLESPACE                        0
--- CREATE USER                              0
--- 
--- DROP TABLESPACE                          0
--- DROP DATABASE                            0
--- 
--- ERRORS                                   0
--- WARNINGS                                 0
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
