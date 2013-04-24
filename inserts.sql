@@ -107,23 +107,74 @@ INSERT INTO TERMINAL(codigo,fecha_alta,fecha_baja,marca,modelo,configuracion,sn,
 
 
 
+INSERT INTO LINEA (codigo,numero,periodo_facturacion,publico) VALUES
+(1,657770878,'2013-01-01 00:00:00','Y') ,
+(2,696993301,'2013-01-01 00:00:00','Y') ,
+(3,629620754,'2013-01-01 00:00:00','Y') ,
+(4,654320357,'2013-01-01 00:00:00','Y') ,
+(5,653909456,'2013-01-01 00:00:00','Y') ,
+(6,678538235,'2013-01-01 00:00:00','Y') ,
+(7,677170356,'2013-01-01 00:00:00','Y') ,
+(8,651648856,'2013-01-01 00:00:00','Y') ,
+(9,671318095,'2013-01-01 00:00:00','Y') ,
+(10,675530418,'2013-01-01 00:00:00','Y') ,
+(11,692282505,'2013-01-01 00:00:00','Y') ,
+(12,633837978,'2013-01-01 00:00:00','Y') ,
+(13,664855237,'2013-01-01 00:00:00','Y') ,
+(14,610365132,'2013-01-01 00:00:00','Y') ,
+(15,674679003,'2013-01-01 00:00:00','Y') ,
+(16,637009049,'2013-01-01 00:00:00','Y') ,
+(17,602941151,'2013-01-01 00:00:00','Y') ,
+(18,620442146,'2013-01-01 00:00:00','Y') ,
+(19,606831597,'2013-01-01 00:00:00','Y') ,
+(20,684207229,'2013-01-01 00:00:00','Y') ,
+(21,657770878,'2013-01-01 00:00:00','Y') ,
+(22,657770978,'2013-01-01 00:00:00','Y') ,
+(23,655883563,'2013-01-01 00:00:00','Y') ,
+(24,606557088,'2013-01-01 00:00:00','Y') ,
+(25,634310475,'2013-01-01 00:00:00','Y') ,
+(26,959338110,'2013-01-01 00:00:00','Y') ,
+(27,953985638,'2013-01-01 00:00:00','Y') ,
+(28,957940920,'2013-01-01 00:00:00','Y') ,
+(29,951693588,'2013-01-01 00:00:00','Y') ,
+(30,959384676,'2013-01-01 00:00:00','Y') ,
+(31,956443914,'2013-01-01 00:00:00','Y') ,
+(32,956420449,'2013-01-01 00:00:00','Y') ,
+(33,957578660,'2013-01-01 00:00:00','Y') ,
+(34,957022891,'2013-01-01 00:00:00','Y') ,
+(35,954760823,'2013-01-01 00:00:00','Y') ,
+(36,950019085,'2013-01-01 00:00:00','Y') ,
+(37,952983389,'2013-01-01 00:00:00','Y') ,
+(38,956198353,'2013-01-01 00:00:00','Y') ,
+(39,954978667,'2013-01-01 00:00:00','Y') ,
+(40,956816697,'2013-01-01 00:00:00','Y');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+INSERT INTO USUARIO(dni,nombre,apellidos,email,codigo_rescate,codigo_dip,codigo_rol) VALUES
+('71946976D','Juan','Romero Tello','jromerotello@gmail.com',1,NULL,1) ,
+('03082054P','Jesús','De la Cruz Freire','jcruzfreire@gmail.com',2,1,2) ,
+('84018843G','Marta','Cortés Paños','mcortespaños@gmail.com',3,1,3) ,
+('34529080P','Antonio','Otero De Juan','aoterodejuan@gmail.com',4,1,4) ,
+('13163532B','María José','Márques Martínez','mjosemarques@gmail.com',5,2,2) ,
+('99097605N','Ángeles','Pardo Llanos','apardollanos@gmail.com',1,2,3) ,
+('85698664C','Raquel','Nicolás Juárez','rnicolas@gmail.com',2,2,4) ,
+('63719306Z','María Dolores','González Bernal','mgonzalezbernal@gmail.com',3,3,2) ,
+('87787332N','Francisco','Suárez Miro','fsuarezmiro@gmail.com',4,3,3) ,
+('62626527B','Pedro','García Ruano','pgarciaruano@gmail.com',5,3,4) ,
+('38615781T','Carmen','Salgado Prieto','csalgadoprieto@gmail.com',1,4,2) ,
+('93147298N','José Miguel','Sancho Espínola','jsancho@gmail.com',2,4,3) ,
+('19998743J','Marta','Sola Taylor','msolataylor@gmail.com',3,4,4) ,
+('44103398R','Gloria','Del Castillo Etxebarria','gcastillo@gmail.com',4,5,2) ,
+('39957941H','Jesús','Aparicio Carpio','japaricio@gmail.com',5,5,3) ,
+('59133396M','Beatriz','Sánchez	Barrena','bsanchezbarrena@gmail.com',1,5,4) ,
+('39124960M','Rosario','Trujillo López','rtrujillo@gmail.com',2,6,2) ,
+('36060096Y','Ramón','Alfonso González','ralfonsogonzalez@gmail.com',3,6,3) ,
+('29002943N','Marta','Gil Montserrat','mgilmontserrat@gmail.com',4,6,4) ,
+('30370939Z','María Jesús','Ramos Macia','mramosmacia@gmail.com',5,7,2) ,
+('19650728B','Mercedes','Rufo Sánchez','mrufosanchez@gmail.com',1,7,3) ,
+('34182948A','Antonio','Navarro	Sánchez','anavarrosanchez@gmail.com',2,7,4) ,
+('16867684J','María Dolores','González Fernández','mgonzalezfernandez@gmail.com',3,8,2) ,
+('93164374E','María Teresa','Vázquez Álvarez','mvazquezalvarez@gmail.com',4,8,3) ,
+('87404617V','María Carmen','Casanova Soriano','mcasanovasoriano@gmail.com',5,8,4);
 
 
